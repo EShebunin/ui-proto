@@ -11,7 +11,6 @@ module.exports = {
     'airbnb-base',
     'plugin:vue/vue3-essential',
     'prettier',
-    'plugin:vue-a11y/recommended',
   ],
   parser: 'vue-eslint-parser',
   parserOptions: {
@@ -19,7 +18,7 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-  plugins: ['vue', 'prettier', 'import', 'vue-a11y'],
+  plugins: ['vue', 'prettier', 'import'],
   settings: {
     'import/resolver': {
       webpack: 'webpack.config.js',

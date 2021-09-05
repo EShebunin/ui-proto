@@ -13,6 +13,8 @@
   "author": "Evgeny Shebunin <evgen.shebunin@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "@headlessui/vue": "^1.4.1",
+    "@heroicons/vue": "^1.0.4",
     "vue": "^3.0.0"
   },
   "devDependencies": {
