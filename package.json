@@ -13,14 +13,13 @@
   "author": "Evgeny Shebunin <evgen.shebunin@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "vue": "^2.6.14",
-    "vue-router": "^3.5.2",
-    "vuex": "^3.6.2"
+    "vue": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
     "@babel/eslint-parser": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
+    "@vue/compiler-sfc": "^3.0.0",
     "autoprefixer": "^10.3.2",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
@@ -43,8 +42,7 @@
     "prettier": "^2.3.2",
     "style-loader": "^3.2.1",
     "tailwindcss": "^2.2.7",
-    "vue-loader": "^15.9.8",
-    "vue-template-compiler": "^2.6.14",
+    "vue-loader": "^16.5.0",
     "webpack": "^5.51.1",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.8.0",

@@ -39,7 +39,7 @@ module.exports = {
     rules: [
       {
         test: /\.(postcss|css)$/,
-        use: ['vue-style-loader', 'css-loader', 'postcss-loader'],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
       {
         test: /\.vue$/,
