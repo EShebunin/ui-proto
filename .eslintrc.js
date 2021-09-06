@@ -9,7 +9,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'airbnb-base',
-    'plugin:vue/vue3-essential',
+    'plugin:vue/vue3-recommended',
     'prettier',
   ],
   parser: 'vue-eslint-parser',
@@ -25,7 +25,6 @@ module.exports = {
     },
   },
   rules: {
-    'no-param-reassign': 'off',
-    'no-unused-expressions': 'off',
+    'no-console': 'off',
   },
 };

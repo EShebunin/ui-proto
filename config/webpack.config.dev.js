@@ -1,7 +1,8 @@
 const { VueLoaderPlugin } = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const { DefinePlugin } = require('webpack');
 
 const path = require('path');
 const paths = require('./paths');
@@ -34,6 +35,7 @@ module.exports = {
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -79,13 +81,17 @@ module.exports = {
     ],
   },
   plugins: [
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
     new ESLintPlugin({
       extensions: ['js', 'vue'],
     }),
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(path.join(paths.src, 'index.html')),
+    }),
+    new DefinePlugin({
+      __VUE_OPTIONS_API__: true,
+      __VUE_PROD_DEVTOOLS__: false,
     }),
   ],
 };
