@@ -49,29 +49,31 @@
           text-[11px]
           leading-[13px]
           px-[10px]
-          py-[5px]
+          py-[6px]
         "
       >
         Добавить
       </button>
 
-      <div class="table mt-2">
-        <div class="table__head border-b border-borderColor">
-          <div
-            v-for="(name, index) in arrayForTable"
-            :key="index"
-            class="table__cell"
-          >
-            {{ name }}
+      <div class="max-w-5xl overflow-auto">
+        <div class="table mt-2">
+          <div class="table__head border-b border-borderColor">
+            <div
+              v-for="(name, index) in arrayForTable"
+              :key="index"
+              class="table__cell"
+            >
+              {{ name }}
+            </div>
           </div>
-        </div>
-        <div class="table__body">
-          <div
-            v-for="(name, index) in arrayForTable"
-            :key="index"
-            class="table__cell"
-          >
-            -
+          <div class="table__body">
+            <div
+              v-for="(name, index) in arrayForTable"
+              :key="index"
+              class="table__cell"
+            >
+              -
+            </div>
           </div>
         </div>
       </div>
@@ -126,7 +128,7 @@ export default {
         'Номер места',
         'Наименование груза',
         'Укрупненное наименование груза',
-        'Род упаковки список выбор',
+        'Упаковка',
         'Класс опасности',
         '№ контейнера',
         '№ сегмента',
