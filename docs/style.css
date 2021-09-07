@@ -678,6 +678,9 @@ video {
 .max-w-7xl {
 	max-width: 80rem;
 }
+.max-w-5xl {
+	max-width: 64rem;
+}
 .cursor-default {
 	cursor: default;
 }
@@ -799,17 +802,13 @@ video {
 	padding-left: 10px;
 	padding-right: 10px;
 }
-.py-\[5px\] {
-	padding-top: 5px;
-	padding-bottom: 5px;
+.py-\[6px\] {
+	padding-top: 6px;
+	padding-bottom: 6px;
 }
 .px-\[14px\] {
 	padding-left: 14px;
 	padding-right: 14px;
-}
-.py-\[6px\] {
-	padding-top: 6px;
-	padding-bottom: 6px;
 }
 .pl-3 {
 	padding-left: 0.75rem;
@@ -1012,6 +1011,7 @@ video {
 	border-color: rgba(219, 226, 234, var(--tw-border-opacity));
 }
 .table__head, .table__body {
+	width: 100%;
 	display: grid;
 	grid-template-columns: 54px 124px 164px 90px 71px 91px 79px 63px 63px 50px 58px 55px 55px 35px 36px 139px;
 }
