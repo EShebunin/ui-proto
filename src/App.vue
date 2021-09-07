@@ -1,26 +1,14 @@
 <template>
-  <div class="font-bold">Hello</div>
+  <div class="h-screen flex justify-center items-center">
+    <form-admission />
+  </div>
 </template>
 
 <script>
+import FormAdmission from './components/FormAdmission.vue';
+
 export default {
-  data() {
-    return {
-      string: '',
-    };
-  },
-
-  created() {
-    this.mymethod();
-  },
-
-  methods: {
-    async mymethod() {
-      const promise = new Promise((resolve) => resolve('Hello'));
-      const hello = await promise;
-      console.log(hello);
-    },
-  },
+  components: { FormAdmission },
 };
 </script>
 

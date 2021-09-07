@@ -7,6 +7,11 @@ module.exports = {
       fontFamily: {
         sans: 'var(--font-sans)',
       },
+      colors: {
+        textBlack: '#333333',
+        textGray: '#756F86',
+        borderColor: '#DBE2EA',
+      },
     },
   },
   variants: {
