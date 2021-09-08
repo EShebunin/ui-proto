@@ -24,8 +24,7 @@
           main-table__row
           cursor-pointer
           hover:bg-blue-50
-          focus:bg-blue-10
-          0
+          focus:bg-blue-100
         "
       >
         <td
