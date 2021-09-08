@@ -18,8 +18,15 @@
       <tr
         v-for="(array, rowIndex) in data"
         :key="rowIndex"
-        class="main-table__row"
+        tabindex="0"
         role="row"
+        class="
+          main-table__row
+          cursor-pointer
+          hover:bg-blue-50
+          focus:bg-blue-10
+          0
+        "
       >
         <td
           v-for="(item, colIndex) in array"
@@ -28,12 +35,7 @@
           role="gridcell"
           class="border-r border-borderColor last-of-type:border-r-0 p-[2px]"
         >
-          <div
-            class="main-table__cell m-body"
-            tabindex="0"
-            contenteditable="true"
-            @input="inputHandler"
-          >
+          <div class="main-table__cell m-body">
             {{ item }}
           </div>
         </td>
@@ -51,11 +53,7 @@ export default {
     data: { type: Array, required: true },
   },
 
-  methods: {
-    inputHandler(e) {
-      console.log(e.target.textContent);
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -84,11 +82,8 @@ export default {
     @apply border-r border-borderColor;
     @apply last-of-type:border-r-0;
     @apply focus:outline-none;
-    @apply focus:ring-2;
-    @apply focus:ring-[#8DD6FF];
 
     &.m-body {
-      @apply border-r-0;
       @apply px-[12px] py-[11px];
     }
   }
