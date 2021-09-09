@@ -174,7 +174,7 @@ export default {
         ],
       ],
       /** @type {boolean} */
-      isOpenModalAdmission: true,
+      isOpenModalAdmission: false,
     };
   },
 
