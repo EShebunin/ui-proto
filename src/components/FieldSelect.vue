@@ -1,10 +1,15 @@
 <template>
-  <Listbox v-model="selectedPerson" as="div" class="flex flex-col">
+  <Listbox
+    :model-value="modelValue"
+    as="div"
+    class="flex flex-col"
+    @update:modelValue="update"
+  >
     <ListboxLabel class="field__label">{{ label }}</ListboxLabel>
 
     <div class="relative">
       <ListboxButton as="template">
-        <input :value="selectedPerson.name" class="field__input m-icon" />
+        <input :value="modelValue.name" class="field__input m-icon" />
       </ListboxButton>
 
       <span
@@ -23,20 +28,20 @@
 
       <ListboxOptions class="field__dropdown">
         <ListboxOption
-          v-for="person in people"
+          v-for="option in options"
           v-slot="{ active }"
-          :key="person.id"
-          :value="person"
+          :key="option.id"
+          :value="option"
           as="template"
         >
           <li
-            :title="person.name"
+            :title="option.name"
             :class="[
               active ? ' bg-borderColor' : 'bg-white',
               'cursor-default select-none p-2 text-[12px] leading-[14px]',
             ]"
           >
-            <span class="block truncate">{{ person.name }}</span>
+            <span class="block truncate">{{ option.name }}</span>
           </li>
         </ListboxOption>
       </ListboxOptions>
@@ -66,20 +71,19 @@ export default {
 
   props: {
     label: { type: String, default: '', required: false },
+    /** @type {Array.<{id: Number|String, name: String}>} */
+    options: { type: Array, required: true },
+    /** @type {{id: Number|String, name: String}} */
+    modelValue: { type: Object, required: true },
   },
 
-  data() {
-    return {
-      selectedPerson: { id: 1, name: 'Авто' },
+  emits: ['update:modelValue'],
 
-      people: [
-        { id: 1, name: 'Авто' },
-        { id: 2, name: 'Авто' },
-        { id: 3, name: 'Авто' },
-        { id: 4, name: 'Авто' },
-        { id: 5, name: 'Авто' },
-      ],
-    };
+  methods: {
+    /** @param {{id: Number|String, name: String}} value */
+    update(value) {
+      this.$emit('update:modelValue', value);
+    },
   },
 };
 </script>

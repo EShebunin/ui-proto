@@ -14,18 +14,47 @@
     <div class="form__body mb-[14px]">
       <div>
         <div class="flex justify-between mb-[12px]">
-          <field-select label="Порт выгрузки" class="w-full mr-[27px]" />
-          <field-select label="Вид ТС" class="max-w-[90px]" />
+          <field-select
+            v-model="waterfront"
+            :options="waterfrontOptions"
+            label="Порт выгрузки"
+            class="w-full mr-[27px]"
+          />
+          <field-select
+            v-model="transport"
+            :options="transportOptions"
+            label="Вид ТС"
+            class="max-w-[90px]"
+          />
         </div>
 
-        <field-select label="Грузооправитель" class="mb-[12px]" />
-        <field-select label="Грузополучатель" class="mb-[12px]" />
-        <field-select label="Место складирования в порту" />
+        <field-select
+          v-model="sender"
+          :options="senderOptions"
+          label="Грузооправитель"
+          class="mb-[12px]"
+        />
+        <field-select
+          v-model="recipient"
+          :options="recipientOptions"
+          label="Грузополучатель"
+          class="mb-[12px]"
+        />
+        <field-select
+          v-model="place"
+          :options="placeOptions"
+          label="Место складирования в порту"
+        />
       </div>
 
       <div>
         <div class="flex justify-between mb-[12px]">
-          <field-select label="Объект" class="max-w-[90px]" />
+          <field-select
+            v-model="objectPlace"
+            :options="objectPlaceOptions"
+            label="Объект"
+            class="max-w-[90px]"
+          />
           <field-text
             id="number-vehicle"
             label="Номер ТС"
@@ -52,7 +81,11 @@
           <field-date id="date-in" label="Дата приемки" class="max-w-[120px]" />
         </div>
 
-        <field-select label="Укрупненное наименование груза" />
+        <field-select
+          v-model="fullName"
+          :options="fullNameOptions"
+          label="Укрупненное наименование груза"
+        />
       </div>
 
       <div class="flex justify-self-end">
@@ -169,6 +202,29 @@ export default {
         'Оговорка',
         'Ф/Е',
       ],
+
+      waterfront: { id: 'empty', name: '' },
+      waterfrontOptions: [{ id: 1, name: 'Архангельск' }],
+
+      transport: { id: 'empty', name: '' },
+      transportOptions: [{ id: 1, name: 'Авто' }],
+
+      sender: { id: 'empty', name: '' },
+      senderOptions: [
+        { id: 1, name: 'АО "Соединительные детали трубоповодов”' },
+      ],
+
+      recipient: { id: 'empty', name: '' },
+      recipientOptions: [{ id: 1, name: 'Закнефтегазстрой-Прометей' }],
+
+      place: { id: 'empty', name: '' },
+      placeOptions: [{ id: 1, name: 'Площадка сварки' }],
+
+      objectPlace: { id: 'empty', name: '' },
+      objectPlaceOptions: [{ id: 1, name: 'СШ' }],
+
+      fullName: { id: 'empty', name: '' },
+      fullNameOptions: [{ id: 1, name: 'Трубная продукция' }],
     };
   },
 
