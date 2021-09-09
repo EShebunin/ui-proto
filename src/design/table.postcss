@@ -1,11 +1,12 @@
-.table {
-  @apply border border-borderColor rounded-md;
+.modal-table {
+  box-shadow: 0 0 0 1px #dbe2ea;
+  @apply rounded-md;
 
-  &__head,
+  &__head {
+    @apply border-b border-borderColor;
+  }
+
   &__body {
-    @apply w-full;
-    @apply grid;
-    @apply grid-cols-[54px,124px,164px,90px,71px,91px,79px,63px,63px,50px,58px,55px,55px,35px,36px,139px];
   }
 
   &__cell {
@@ -15,5 +16,6 @@
     @apply p-2;
     @apply border-borderColor;
     @apply border-r;
+    @apply last-of-type:border-r-0;
   }
 }
