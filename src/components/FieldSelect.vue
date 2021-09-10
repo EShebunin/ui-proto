@@ -9,7 +9,7 @@
 
     <div class="relative">
       <ListboxButton as="template">
-        <input :value="modelValue.name" class="field__input m-icon" />
+        <input :value="modelValue.name" readonly class="field__input m-icon" />
       </ListboxButton>
 
       <span
