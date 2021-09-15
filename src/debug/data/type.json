@@ -1,0 +1,5 @@
+[
+  { "id": 1, "name": "Приёмка", "processable": null },
+  { "id": 2, "name": "Отгрузка", "processable": null },
+  { "id": 3, "name": "Внутреннее перемещение", "processable": null }
+]
