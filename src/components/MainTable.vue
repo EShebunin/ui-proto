@@ -3,20 +3,20 @@
     <thead class="main-table__head" role="rowgroup">
       <tr class="main-table__row" role="row">
         <th
-          v-for="(item, index) in headers"
-          :key="index"
-          :title="item"
+          v-for="(value, key) in headers"
+          :key="key"
+          :title="value"
           role="columnheader"
           class="main-table__cell font-normal"
         >
-          {{ item }}
+          {{ value }}
         </th>
       </tr>
     </thead>
 
     <tbody class="main-table__body" role="rowgroup">
       <tr
-        v-for="(array, rowIndex) in data"
+        v-for="(object, rowIndex) in data"
         :key="rowIndex"
         tabindex="0"
         role="row"
@@ -28,14 +28,14 @@
         "
       >
         <td
-          v-for="(item, colIndex) in array"
-          :key="colIndex"
-          :title="item"
+          v-for="(value, key) in object"
+          :key="key"
+          :title="value"
           role="gridcell"
           class="border-r border-borderColor last-of-type:border-r-0 p-[2px]"
         >
           <div class="main-table__cell m-body">
-            {{ item }}
+            {{ value }}
           </div>
         </td>
       </tr>
@@ -46,9 +46,9 @@
 <script>
 export default {
   props: {
-    /** @type {string[]} */
-    headers: { type: Array, required: true },
-    /** @type {Array.<string[]>} */
+    /** @type {Object} */
+    headers: { type: Object, required: true },
+    /** @type {Array} */
     data: { type: Array, required: true },
   },
 

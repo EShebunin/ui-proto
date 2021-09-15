@@ -1,73 +1,51 @@
 <template>
   <header class="header">
-    <nav class="header__nav">
-      <Menu as="div" class="relative">
-        <MenuButton class="header__link">
-          <shipping-icon />
-          <span>Приемка</span>
-        </MenuButton>
+    <h1 class="header__title">{{ title }}</h1>
 
-        <transition
-          enter-active-class="transition duration-100 ease-out"
-          enter-from-class="transform scale-95 opacity-0"
-          enter-to-class="transform scale-100 opacity-100"
-          leave-active-class="transition duration-75 ease-in"
-          leave-from-class="transform scale-100 opacity-100"
-          leave-to-class="transform scale-95 opacity-0"
-        >
-          <MenuItems class="absolute z-10 p-2 shadow-lg bg-white">
-            <MenuItem v-slot="{ active }">
-              <button
-                type="button"
-                class="header__button"
-                :class="{ 'm-active': active }"
-                @click="openModalAdmission"
-              >
-                Трубы
-              </button>
-            </MenuItem>
-
-            <MenuItem v-slot="{ active }">
-              <button
-                type="button"
-                class="header__button"
-                :class="{ 'm-active': active }"
-                @click="openModalAdmission"
-              >
-                Ген. груз
-              </button>
-            </MenuItem>
-
-            <MenuItem v-slot="{ active }">
-              <button
-                type="button"
-                class="header__button"
-                :class="{ 'm-active': active }"
-                @click="openModalAdmission"
-              >
-                Контейнер
-              </button>
-            </MenuItem>
-          </MenuItems>
-        </transition>
-      </Menu>
-    </nav>
+    <div class="header__controls">
+      <!-- TODO: Add serach fields -->
+      <field-text id="header-search" class="w-[450px]" />
+      <slot name="button" />
+    </div>
   </header>
 </template>
 
 <script>
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
-import ShippingIcon from './Icons/ShippingIcon.vue';
+import FieldText from './FieldText.vue';
 
 export default {
-  components: { ShippingIcon, Menu, MenuButton, MenuItems, MenuItem },
-
-  emits: ['openModalAdmission'],
-
-  methods: {
-    openModalAdmission() {
-      requestAnimationFrame(() => this.$emit('openModalAdmission'));
-    },
+  components: { FieldText },
+  props: {
+    /** @type {String} */
+    title: { type: String, default: '', required: false },
   },
 };
 </script>
+
+<style lang="postcss">
+.header {
+  @apply px-[21px];
+  @apply pt-[32px];
+  @apply pb-[14px];
+
+  &__title {
+    @apply text-[24px] text-[#036B84];
+    @apply font-bold;
+    @apply leading-[28px];
+    @apply mb-[9px];
+  }
+
+  &__button {
+    @apply bg-[#036B84];
+    @apply px-[13px];
+    @apply py-[7px];
+    @apply rounded-lg;
+    @apply text-[18px] text-white;
+    @apply leading-[21px];
+  }
+
+  &__controls {
+    @apply flex items-center;
+  }
+}
+</style>
