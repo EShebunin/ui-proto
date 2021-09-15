@@ -20,8 +20,7 @@
           </TransitionChild>
 
           <TransitionChild
-            as="div"
-            class="min-h-screen flex items-center"
+            as="template"
             enter="duration-300 ease-out"
             enter-from="opacity-0 scale-95"
             enter-to="opacity-100 scale-100"
@@ -29,10 +28,12 @@
             leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95"
           >
-            <form-admission
-              class="transition-all transform bg-white shadow-xl mx-auto"
-              @closeForm="closeModalAdmission"
-            />
+            <div class="min-h-screen flex items-center transform">
+              <form-admission
+                class="bg-white shadow-xl mx-auto"
+                @closeForm="closeModalAdmission"
+              />
+            </div>
           </TransitionChild>
         </div>
       </Dialog>
@@ -189,5 +190,3 @@ export default {
   },
 };
 </script>
-
-<style lang="postcss"></style>
