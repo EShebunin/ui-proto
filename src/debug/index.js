@@ -2,8 +2,9 @@ import table from './data/table.json';
 import big from './data/big.json';
 import port from './data/port.json';
 import type from './data/type.json';
-import receiver from './data/receiver.json';
+import contragent from './data/contragent.json';
 import object from './data/object.json';
+import place from './data/place.json';
 
 export function debugTableInfo() {
   return new Promise((resolve) => resolve({ data: table }));
@@ -17,16 +18,16 @@ export function debugProperties(property) {
     return new Promise((resolve) => resolve({ data: object }));
   }
   if (property === 'place') {
-    return new Promise((resolve) => resolve({ data: big }));
+    return new Promise((resolve) => resolve({ data: place }));
   }
   if (property === 'port') {
     return new Promise((resolve) => resolve({ data: port }));
   }
-  if (property === 'receiver') {
-    return new Promise((resolve) => resolve({ data: receiver }));
+  if (property === 'contragent') {
+    return new Promise((resolve) => resolve({ data: contragent }));
   }
-  if (property === 'sender') {
-    return new Promise((resolve) => resolve({ data: receiver }));
+  if (property === 'contragent') {
+    return new Promise((resolve) => resolve({ data: contragent }));
   }
   if (property === 'type') {
     return new Promise((resolve) => resolve({ data: type }));
