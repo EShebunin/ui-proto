@@ -1,0 +1,40 @@
+[
+  {
+    "big": 1,
+    "contract": "1337-ИЛИТ",
+    "danger_class": "Опасно пиздец",
+    "entities": "[null]",
+    "extra": "Тестовая приёмка груза",
+    "id": 1,
+    "object": 2,
+    "place": 1,
+    "port": 1,
+    "receive_date": "Fri, 03 Sep 2021 00:00:00 GMT",
+    "receiver": 9,
+    "send_date": "Wed, 01 Sep 2021 00:00:00 GMT",
+    "sender": 1,
+    "tag": "1488-ССИХЙ",
+    "transport_tag": "О514УХ77",
+    "transport_type": "Авто",
+    "type": 1
+  },
+  {
+    "big": 1,
+    "contract": "1337-ИЛИТ",
+    "danger_class": "Опасно пиздец",
+    "entities": "[1]",
+    "extra": "Тестовая приёмка груза",
+    "id": 2,
+    "object": 2,
+    "place": 1,
+    "port": 1,
+    "receive_date": "Fri, 03 Sep 2021 00:00:00 GMT",
+    "receiver": 9,
+    "send_date": "Wed, 01 Sep 2021 00:00:00 GMT",
+    "sender": 1,
+    "tag": "1488-ССИХЙ",
+    "transport_tag": "О514УХ77",
+    "transport_type": "Авто",
+    "type": 1
+  }
+]

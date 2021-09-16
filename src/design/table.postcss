@@ -1,0 +1,22 @@
+.modal-table {
+  box-shadow: 0 0 0 1px #dbe2ea;
+  @apply rounded-md;
+  @apply table-fixed;
+  @apply cursor-default;
+
+  &__row {
+    @apply border-t border-borderColor;
+    @apply odd:bg-[#ECEDEE];
+  }
+
+  &__cell {
+    @apply text-textGray text-left;
+    @apply text-[11px];
+    @apply leading-[13px];
+    @apply p-2;
+    @apply border-borderColor;
+    @apply border-r;
+    @apply last-of-type:border-r-0;
+    @apply min-w-[50px];
+  }
+}

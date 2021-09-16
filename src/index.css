@@ -1,0 +1,6 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import './design/variables';
+@import './design/field.postcss';
+@import './design/table.postcss';

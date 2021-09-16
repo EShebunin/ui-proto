@@ -1,0 +1,55 @@
+.field {
+  &__label {
+    @apply text-[13px];
+    @apply leading-[15px];
+    @apply text-textGray;
+    @apply block;
+    @apply mb-[7px];
+  }
+
+  &__input {
+    @apply text-[12px];
+    @apply leading-[14px];
+    @apply focus:outline-none;
+    @apply focus:ring-2;
+    @apply focus:ring-[#8DD6FF];
+    @apply focus:border-[#8DD6FF];
+    @apply p-2;
+    @apply block;
+    @apply w-full;
+    @apply rounded-[4px];
+    @apply border border-borderColor;
+
+    &.m-icon {
+      @apply pr-8;
+    }
+
+    &::-webkit-datetime-edit-fields-wrapper {
+      @apply p-0;
+    }
+
+    &::-webkit-calendar-picker-indicator {
+      @apply m-0 p-0;
+      @apply h-[14px];
+    }
+  }
+
+  &__dropdown {
+    @apply absolute;
+    @apply z-10;
+    @apply w-full;
+    @apply py-1;
+    @apply mt-1;
+    @apply overflow-auto;
+    @apply text-base;
+    @apply bg-white;
+    @apply rounded-md;
+    @apply shadow-lg;
+    @apply max-h-60;
+    @apply ring-1;
+    @apply ring-black;
+    @apply ring-opacity-5;
+    @apply focus:outline-none;
+    @apply sm:text-sm;
+  }
+}
