@@ -9,17 +9,21 @@
       rounded-md
     "
   >
-    <h2 class="form__header">Прием груза</h2>
+    <h2 class="form__header">
+      <span>Прием груза&nbsp;</span>
+      <span v-if="shippingName">({{ shippingName }})</span>
+    </h2>
 
     <div class="form__body mb-[14px]">
       <div>
         <div class="flex justify-between mb-[12px]">
           <field-select
-            v-model="waterfront"
-            :options="waterfrontOptions"
+            v-model="port"
+            :options="portArray"
             label="Порт выгрузки"
             class="w-full mr-[27px]"
           />
+          <!-- TODO: Добавить справочник тип транспорта -->
           <field-select
             v-model="transport"
             :options="transportOptions"
@@ -30,19 +34,19 @@
 
         <field-select
           v-model="sender"
-          :options="senderOptions"
+          :options="senderArray"
           label="Грузооправитель"
           class="mb-[12px]"
         />
         <field-select
-          v-model="recipient"
-          :options="recipientOptions"
+          v-model="receiver"
+          :options="receiverArray"
           label="Грузополучатель"
           class="mb-[12px]"
         />
         <field-select
           v-model="place"
-          :options="placeOptions"
+          :options="placeArray"
           label="Место складирования в порту"
         />
       </div>
@@ -50,20 +54,20 @@
       <div>
         <div class="flex justify-between mb-[12px]">
           <field-select
-            v-model="objectPlace"
-            :options="objectPlaceOptions"
+            v-model="object"
+            :options="objectArray"
             label="Объект"
             class="max-w-[90px]"
           />
           <field-text
             id="number-transport"
-            v-model="numberTransport"
+            v-model="transport_tag"
             label="Номер ТС"
             class="max-w-[90px]"
           />
           <field-text
             id="waybill"
-            v-model="waybill"
+            v-model="tag"
             label="ТН/ЖДН"
             class="max-w-[120px]"
           />
@@ -78,7 +82,7 @@
           />
           <field-date
             id="date-out"
-            v-model="dateOut"
+            v-model="send_date"
             label="Дата отгрузки"
             class="max-w-[120px]"
           />
@@ -87,21 +91,21 @@
         <div class="flex justify-between mb-[12px]">
           <field-text
             id="danger-level"
-            v-model="dangerLevel"
+            v-model="danger_class"
             label="Кл. опасности"
             class="max-w-[90px]"
           />
           <field-date
             id="date-in"
-            v-model="dateIn"
+            v-model="receive_date"
             label="Дата приемки"
             class="max-w-[120px]"
           />
         </div>
 
         <field-select
-          v-model="fullName"
-          :options="fullNameOptions"
+          v-model="big"
+          :options="bigArray"
           label="Укрупненное наименование груза"
         />
       </div>
@@ -137,31 +141,32 @@
         <thead class="modal-table__head">
           <tr>
             <th
-              v-for="item in arrayForHeadTable"
-              :key="item.id"
+              v-for="(value, key) in headTable"
+              :key="key"
               class="modal-table__cell break-words"
             >
-              {{ item.name }}
+              {{ value }}
             </th>
           </tr>
         </thead>
 
         <tbody class="modal-table__body">
           <tr
-            v-for="(array, indexRow) in arrayForDataTable"
+            v-for="(row, indexRow) in dataTable"
             :key="indexRow"
             class="modal-table__row"
           >
             <td
-              v-for="(item, indexCol) in array"
-              :key="indexCol"
+              v-for="(value, key) in row"
+              :key="key"
               class="modal-table__cell break-all"
             >
-              <field-textarea
-                v-model="item.name"
+              <field-contenteditable
+                v-model="row[key]"
                 class="
-                  text-[10px] text-textBlack
-                  leading-[12px]
+                  text-[12px] text-textBlack
+                  leading-[14px]
+                  inline-block
                   w-full
                   focus:outline-none focus:ring-2 focus:ring-[#8DD6FF]
                 "
@@ -174,7 +179,7 @@
 
     <field-text
       id="share-note"
-      v-model="shareNote"
+      v-model="extra"
       label="Общая оговорка"
       class="mb-[24px]"
     />
@@ -219,97 +224,164 @@
 import FieldDate from './FieldDate.vue';
 import FieldSelect from './FieldSelect.vue';
 import FieldText from './FieldText.vue';
-import FieldTextarea from './FieldTextarea.vue';
+
+import useReferences from '@/composables/useReferences';
+import FieldContenteditable from './FieldContenteditable.vue';
 
 export default {
-  components: { FieldSelect, FieldText, FieldDate, FieldTextarea },
+  components: { FieldSelect, FieldText, FieldDate, FieldContenteditable },
+
+  props: {
+    shippingName: { type: String, default: '', required: false },
+  },
 
   emits: ['closeForm'],
 
+  setup() {
+    const {
+      bigArray,
+      objectArray,
+      placeArray,
+      portArray,
+      receiverArray,
+      senderArray,
+      typeArray,
+    } = useReferences();
+
+    return {
+      bigArray,
+      objectArray,
+      placeArray,
+      portArray,
+      receiverArray,
+      senderArray,
+      typeArray,
+    };
+  },
+
   data() {
     return {
-      /** @type {Array.<{id: String name: String}>} */
-      arrayForHeadTable: [
-        { id: 'name', name: 'Наименование груза' },
-        { id: 'count', name: 'Кол-во мест' },
-        { id: 'type-pack', name: 'Род упаковки' },
-        { id: 'gross-weight', name: 'Вес брутто' },
-        { id: 'length', name: 'Длина' },
-        { id: 'width', name: 'Ширина' },
-        { id: 'height', name: 'Высота' },
-        { id: 'num-seg', name: '№ сегмента' },
-        { id: 'diameter', name: 'Диаметр' },
-        { id: 'thickness', name: 'Толщина стенки' },
-        { id: 'num-place', name: 'Номер места' },
-        { id: 'note', name: 'Оговорка' },
-        { id: 'f-e', name: 'Ф/Е' },
-      ],
+      headTable: {
+        name: 'Наименование груза',
+        inplace_count: 'Кол-во мест',
+        pipe_tag: 'Род упаковки',
+        weight: 'Вес брутто',
+        length: 'Длина',
+        width: 'Ширина',
+        height: 'Высота',
+        segment_number: '№ сегмента',
+        diameter: 'Диаметр',
+        thickness: 'Толщина стенки',
+        place_number: 'Номер места',
+        extra: 'Оговорка',
+        fu: 'Ф/Е',
+      },
+      dataTable: [],
 
-      /** @type {Array.<{id: String name: String}[]>} */
-      arrayForDataTable: [],
+      /** Порт выгрузки */
+      port: { id: '', name: '' },
 
-      waterfront: { id: 'empty', name: '' },
-      waterfrontOptions: [{ id: 1, name: 'Архангельск' }],
-
-      transport: { id: 'empty', name: '' },
+      /** Вид ТС */
+      transport: { id: '', name: '' },
+      // TODO: добавить справочник вида авто
       transportOptions: [{ id: 1, name: 'Авто' }],
-
-      sender: { id: 'empty', name: '' },
-      senderOptions: [
-        { id: 1, name: 'АО "Соединительные детали трубоповодов”' },
-      ],
-
-      recipient: { id: 'empty', name: '' },
-      recipientOptions: [{ id: 1, name: 'Закнефтегазстрой-Прометей' }],
-
-      place: { id: 'empty', name: '' },
-      placeOptions: [{ id: 1, name: 'Площадка сварки' }],
-
-      objectPlace: { id: 'empty', name: '' },
-      objectPlaceOptions: [{ id: 1, name: 'СШ' }],
-
-      fullName: { id: 'empty', name: '' },
-      fullNameOptions: [{ id: 1, name: 'Трубная продукция' }],
-
-      numberTransport: '',
-
-      waybill: '',
-
+      /** Грузооправитель */
+      sender: { id: '', name: '' },
+      /** Грузополучатель */
+      receiver: { id: '', name: '' },
+      /** Место складирования в порту */
+      place: { id: '', name: '' },
+      /** Объект */
+      object: { id: '', name: '' },
+      /** Укрупненное наименование груза */
+      big: { id: '', name: '' },
+      /** Номер ТС */
+      transport_tag: '',
+      /** ТН/ЖДН/КС */
+      tag: '',
+      /** Приемный акт */
       act: '',
-
-      dangerLevel: '',
-
-      dateOut: '',
-
-      dateIn: '',
-
+      /** Кл. опасности */
+      danger_class: '',
+      /** Дата отгрузки */
+      send_date: '',
+      /** Дата приемки */
+      receive_date: '',
+      /** Договор поставки */
       contract: '',
-
-      shareNote: '',
+      /** Общая оговорка */
+      extra: '',
     };
+  },
+
+  computed: {
+    /** Проверка формы на корректность заполнения данными */
+    isNotValidForm() {
+      return (
+        !this.big.id &&
+        !this.contract &&
+        !this.danger_class &&
+        !this.object.id &&
+        !this.port.id &&
+        !this.place.id &&
+        !this.receive_date &&
+        !this.send_date &&
+        !this.sender.id &&
+        !this.receiver.id &&
+        !this.tag &&
+        !this.transport_tag &&
+        !this.transport.id
+      );
+    },
   },
 
   methods: {
     addRowTable() {
-      this.arrayForDataTable.push([
-        { id: 'name', name: '' },
-        { id: 'count', name: '' },
-        { id: 'type-pack', name: '' },
-        { id: 'gross-weight', name: '' },
-        { id: 'length', name: '' },
-        { id: 'width', name: '' },
-        { id: 'height', name: '' },
-        { id: 'num-seg', name: '' },
-        { id: 'diameter', name: '' },
-        { id: 'thickness', name: '' },
-        { id: 'num-place', name: '' },
-        { id: 'note', name: '' },
-        { id: 'f-e', name: '' },
-      ]);
+      this.dataTable.push({
+        name: '',
+        inplace_count: '',
+        pipe_tag: '',
+        weight: '',
+        length: '',
+        width: '',
+        height: '',
+        segment_number: '',
+        diameter: '',
+        thickness: '',
+        place_number: '',
+        extra: '',
+        fu: '',
+      });
     },
 
     save() {
-      this.$emit('closeForm');
+      if (!this.isNotValidForm) {
+        const document = {
+          big: this.big.id,
+          contract: this.contract,
+          danger_class: this.danger_class,
+          entities: this.dataTable,
+          extra: this.extra,
+          // id: 1, Как я его сформирую?
+          object: this.object.id,
+          place: this.place.id,
+          port: this.port.id,
+          receive_date: this.receive_date,
+          receiver: this.receiver.id,
+          send_date: this.send_date,
+          sender: this.sender.id,
+          tag: this.tag,
+          transport_tag: this.transport_tag,
+          transport_type: this.transport.id,
+          type: 1,
+        };
+
+        console.log(document);
+      } else {
+        console.log('не сформирован документ');
+      }
+
+      // this.$emit('closeForm');
     },
     cancel() {
       this.$emit('closeForm');

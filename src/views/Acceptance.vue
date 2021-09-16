@@ -91,6 +91,7 @@
           >
             <div class="min-h-screen flex items-center transform">
               <form-admission
+                :shipping-name="shippingName"
                 class="bg-white shadow-xl mx-auto"
                 @closeForm="setIsOpenModal(false)"
               />
@@ -173,8 +174,14 @@ export default {
 
   data() {
     return {
-      /** @type {boolean} */
+      /** @type {Boolean} */
       isOpenModal: false,
+
+      /**
+       * Наименование типа принимаемого груза
+       * @type {String}
+       * */
+      shippingName: '',
 
       mainTableHeader: {
         id: '№',
@@ -234,21 +241,24 @@ export default {
       this.isOpenModal = value;
     },
     openModalPipes() {
+      this.shippingName = 'трубы';
       requestAnimationFrame(() => {
         this.setIsOpenModal(true);
       });
     },
 
     openModalCrisper() {
-      requestAnimationFrame(() => {
-        this.setIsOpenModal(true);
-      });
+      this.shippingName = 'контейнер';
+      // requestAnimationFrame(() => {
+      //   this.setIsOpenModal(true);
+      // });
     },
 
     openModalCargo() {
-      requestAnimationFrame(() => {
-        this.setIsOpenModal(true);
-      });
+      this.shippingName = 'ген. груз';
+      // requestAnimationFrame(() => {
+      //   this.setIsOpenModal(true);
+      // });
     },
 
     getPropertiesValue(id, array) {
