@@ -3,18 +3,18 @@
     <h1 class="header__title">{{ title }}</h1>
 
     <div class="header__controls">
-      <!-- TODO: Add serach fields -->
-      <field-text id="header-search" class="w-[450px]" />
+      <main-search />
+
       <slot name="button" />
     </div>
   </header>
 </template>
 
 <script>
-import FieldText from './FieldText.vue';
+import MainSearch from './MainSearch.vue';
 
 export default {
-  components: { FieldText },
+  components: { MainSearch },
   props: {
     /** @type {String} */
     title: { type: String, default: '', required: false },
@@ -37,7 +37,8 @@ export default {
 
   &__button {
     @apply bg-[#036B84];
-    @apply px-[13px];
+    @apply pl-[13px];
+    @apply pr-[16px];
     @apply py-[7px];
     @apply rounded-lg;
     @apply text-[18px] text-white;

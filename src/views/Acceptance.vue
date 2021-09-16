@@ -3,7 +3,12 @@
     <main-header title="Прием груза">
       <template #button>
         <Menu as="div" class="relative ml-[53px]">
-          <MenuButton class="header__button"> + Добавить </MenuButton>
+          <MenuButton
+            class="header__button flex items-center justify-between w-[140px]"
+          >
+            <span>+</span>
+            <span>Добавить</span>
+          </MenuButton>
 
           <transition
             enter-active-class="transition duration-100 ease-out"
@@ -16,6 +21,7 @@
             <MenuItems
               class="
                 absolute
+                inset-x-0
                 z-10
                 mt-[2px]
                 px-[12px]
@@ -28,7 +34,13 @@
               <MenuItem v-slot="{ active }">
                 <button
                   type="button"
-                  class="text-[18px] block"
+                  class="
+                    text-[18px] text-left
+                    leading-[21px]
+                    block
+                    w-full
+                    mb-[9px]
+                  "
                   :class="active ? 'text-[#036B84]' : 'text-[#675A5A]'"
                   @click="openModalPipes"
                 >
@@ -39,7 +51,13 @@
               <MenuItem v-slot="{ active }">
                 <button
                   type="button"
-                  class="text-[18px] block"
+                  class="
+                    text-[18px] text-left
+                    leading-[21px]
+                    block
+                    w-full
+                    mb-[9px]
+                  "
                   :class="active ? 'text-[#036B84]' : 'text-[#675A5A]'"
                   @click="openModalCrisper"
                 >
@@ -50,7 +68,7 @@
               <MenuItem v-slot="{ active }">
                 <button
                   type="button"
-                  class="text-[18px] block"
+                  class="text-[18px] text-left leading-[21px] block w-full"
                   :class="active ? 'text-[#036B84]' : 'text-[#675A5A]'"
                   @click="openModalCargo"
                 >
