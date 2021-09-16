@@ -49,15 +49,30 @@ export default {
   data() {
     return {
       isHovered: false,
+      timeout: null,
     };
   },
 
   methods: {
-    overHandler() {
-      this.isHovered = true;
+    /** @param {Boolean} value */
+    setIsHovered(value) {
+      this.isHovered = value;
     },
+
+    overHandler() {
+      clearTimeout(this.timeout);
+
+      this.timeout = setTimeout(() => {
+        this.setIsHovered(true);
+      }, 250);
+    },
+
     leaveHandler() {
-      this.isHovered = false;
+      clearTimeout(this.timeout);
+
+      this.timeout = setTimeout(() => {
+        this.setIsHovered(false);
+      }, 0);
     },
   },
 };
