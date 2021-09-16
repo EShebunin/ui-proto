@@ -30,7 +30,7 @@
                   type="button"
                   class="text-[18px] block"
                   :class="active ? 'text-[#036B84]' : 'text-[#675A5A]'"
-                  @click="setIsOpenModal(true)"
+                  @click="openModalPipes"
                 >
                   Трубы
                 </button>
@@ -41,7 +41,7 @@
                   type="button"
                   class="text-[18px] block"
                   :class="active ? 'text-[#036B84]' : 'text-[#675A5A]'"
-                  @click="setIsOpenModal(true)"
+                  @click="openModalCrisper"
                 >
                   Контейнеры
                 </button>
@@ -52,7 +52,7 @@
                   type="button"
                   class="text-[18px] block"
                   :class="active ? 'text-[#036B84]' : 'text-[#675A5A]'"
-                  @click="setIsOpenModal(true)"
+                  @click="openModalCargo"
                 >
                   Ген. груз
                 </button>
@@ -117,7 +117,8 @@ import MainHeader from '@/components/MainHeader.vue';
 import MainTable from '@/components/MainTable.vue';
 import FormAdmission from '@/components/FormAdmission.vue';
 
-import { getProperties, getTableInfo } from '@/api';
+import { getTableInfo } from '@/api';
+import useReferences from '@/composables/useReferences';
 
 export default {
   components: {
@@ -132,6 +133,42 @@ export default {
     MenuButton,
     MenuItems,
     MenuItem,
+  },
+
+  setup() {
+    const {
+      bigArray,
+      objectArray,
+      placeArray,
+      portArray,
+      receiverArray,
+      senderArray,
+      typeArray,
+      getBigArray,
+      getObjectArray,
+      getPlaceArray,
+      getPortArray,
+      getReceiverArray,
+      getSenderArray,
+      getTypeArray,
+    } = useReferences();
+
+    return {
+      bigArray,
+      objectArray,
+      placeArray,
+      portArray,
+      receiverArray,
+      senderArray,
+      typeArray,
+      getBigArray,
+      getObjectArray,
+      getPlaceArray,
+      getPortArray,
+      getReceiverArray,
+      getSenderArray,
+      getTypeArray,
+    };
   },
 
   data() {
@@ -153,49 +190,10 @@ export default {
         object: 'Объект',
       },
       mainTableData: [],
-
-      /**
-       * Массив с объектами "Укрупненное наименование груза"
-       * @type {Array.<{id: Number, name: String}>}
-       * */
-      bigArray: [],
-      /**
-       * Массив с объектами "Объектов"
-       * @type {Array.<{id: Number, name: String}>}
-       * */
-      objectArray: [],
-      /**
-       * Массив с объектами "Место складирования в порту"
-       * @type {Array.<{id: Number, name: String}>}
-       * */
-      placeArray: [],
-      /**
-       * Массив с объектами "Порт"
-       * @type {Array.<{id: Number, name: String}>}
-       * */
-      portArray: [],
-      /**
-       * Массив с объектами "Грузополучатель"
-       * @type {Array.<{id: Number, name: String}>}
-       * */
-      receiverArray: [],
-      /**
-       * Массив с объектами "Грузоотправитель"
-       * @type {Array.<{id: Number, name: String}>}
-       * */
-      senderArray: [],
-      /**
-       *  Массив с объектами "Тип операции"
-       * @type {Array.<{id: Number, name: String}>}
-       * */
-      typeArray: [],
     };
   },
 
   computed: {
-    tableKeys() {
-      return Object.keys(this.mainTableHeader);
-    },
     /** @returns {Array} */
     formatTableData() {
       return this.mainTableData.map((item) => ({
@@ -217,13 +215,15 @@ export default {
   },
 
   async created() {
-    this.bigArray = await getProperties('big');
-    this.objectArray = await getProperties('object');
-    this.placeArray = await getProperties('place');
-    this.portArray = await getProperties('port');
-    this.receiverArray = await getProperties('receiver');
-    this.senderArray = await getProperties('sender');
-    this.typeArray = await getProperties('type');
+    await Promise.all([
+      this.getBigArray(),
+      this.getObjectArray(),
+      this.getPlaceArray(),
+      this.getPortArray(),
+      this.getReceiverArray(),
+      this.getSenderArray(),
+      this.getTypeArray(),
+    ]);
 
     this.mainTableData = await getTableInfo();
   },
@@ -232,6 +232,23 @@ export default {
     /** @param {Boolean} value */
     setIsOpenModal(value) {
       this.isOpenModal = value;
+    },
+    openModalPipes() {
+      requestAnimationFrame(() => {
+        this.setIsOpenModal(true);
+      });
+    },
+
+    openModalCrisper() {
+      requestAnimationFrame(() => {
+        this.setIsOpenModal(true);
+      });
+    },
+
+    openModalCargo() {
+      requestAnimationFrame(() => {
+        this.setIsOpenModal(true);
+      });
     },
 
     getPropertiesValue(id, array) {
