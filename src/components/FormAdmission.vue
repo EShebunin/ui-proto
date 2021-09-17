@@ -163,6 +163,10 @@
             >
               <field-contenteditable
                 v-model="row[key]"
+                tag="span"
+                :contenteditable="true"
+                :no-n-l="true"
+                :no-h-t-m-l="true"
                 class="
                   text-[12px] text-textBlack
                   leading-[14px]
@@ -221,12 +225,12 @@
 </template>
 
 <script>
+import FieldContenteditable from 'vue-contenteditable';
 import FieldDate from './FieldDate.vue';
 import FieldSelect from './FieldSelect.vue';
 import FieldText from './FieldText.vue';
 
 import useReferences from '@/composables/useReferences';
-import FieldContenteditable from './FieldContenteditable.vue';
 
 export default {
   components: { FieldSelect, FieldText, FieldDate, FieldContenteditable },
