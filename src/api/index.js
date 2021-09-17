@@ -1,17 +1,28 @@
-// import makeRequest from './makeRequest';
+import makeRequest from './makeRequest';
 
-import { debugProperties, debugTableInfo } from '@/debug';
-
-/** @returns {Promise<Array>} */
 export async function getTableInfo() {
-  const { data } = await debugTableInfo();
+  const { data } = await makeRequest({
+    url: '/doc',
+    method: 'GET',
+  });
+  return data;
+}
+
+export async function getProperties(property) {
+  const { data } = await makeRequest({
+    url: `/properties/${property}`,
+    method: 'GET',
+  });
 
   return data;
 }
 
-/** @returns {Promise<Array<{id: Number, name: String}>>} */
-export async function getProperties(property) {
-  const { data } = await debugProperties(property);
+export async function sendDocToBackend(objectDoc) {
+  const { data } = await makeRequest({
+    url: '/doc/1',
+    method: 'PUT',
+    data: objectDoc,
+  });
 
   return data;
 }
