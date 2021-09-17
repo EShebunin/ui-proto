@@ -1,7 +1,7 @@
 <template>
   <div
     class="
-      max-w-[996px]
+      w-[996px]
       py-[22px]
       px-[24px]
       text-textBlack
@@ -47,6 +47,7 @@
         <field-select
           v-model="place"
           :options="placeArray"
+          :disabled="!placeArray.length"
           label="Место складирования в порту"
         />
       </div>
@@ -230,7 +231,9 @@ import FieldDate from './FieldDate.vue';
 import FieldSelect from './FieldSelect.vue';
 import FieldText from './FieldText.vue';
 
+import { sendDocToBackend } from '@/api';
 import useReferences from '@/composables/useReferences';
+import shippingNames from '@/composables/shippingNames';
 
 export default {
   components: { FieldSelect, FieldText, FieldDate, FieldContenteditable },
@@ -239,7 +242,7 @@ export default {
     shippingName: { type: String, default: '', required: false },
   },
 
-  emits: ['closeForm'],
+  emits: ['closeForm', 'confirmForm'],
 
   setup() {
     const {
@@ -265,21 +268,7 @@ export default {
 
   data() {
     return {
-      headTable: {
-        name: 'Наименование груза',
-        inplace_count: 'Кол-во мест',
-        pipe_tag: 'Род упаковки',
-        weight: 'Вес брутто',
-        length: 'Длина',
-        width: 'Ширина',
-        height: 'Высота',
-        segment_number: '№ сегмента',
-        diameter: 'Диаметр',
-        thickness: 'Толщина стенки',
-        place_number: 'Номер места',
-        extra: 'Оговорка',
-        fu: 'Ф/Е',
-      },
+      headTable: {},
       dataTable: [],
 
       /** Порт выгрузки */
@@ -327,46 +316,133 @@ export default {
         !this.danger_class &&
         !this.object.id &&
         !this.port.id &&
-        !this.place.id &&
+        // !this.place.id &&
         !this.receive_date &&
         !this.send_date &&
         !this.sender.id &&
         !this.receiver.id &&
         !this.tag &&
-        !this.transport_tag &&
-        !this.transport.id
+        !this.transport_tag
+        // &&
+        // !this.transport.id
       );
     },
+  },
+  mounted() {
+    if (this.shippingName === shippingNames.pipes) {
+      this.headTable = {
+        name: 'Наименование груза',
+        inplace_count: 'Кол-во мест',
+        pipe_tag: 'Род упаковки',
+        weight: 'Вес брутто',
+        length: 'Длина',
+        width: 'Ширина',
+        height: 'Высота',
+        segment_number: '№ сегмента',
+        diameter: 'Диаметр',
+        thickness: 'Толщина стенки',
+        place_number: 'Номер места',
+        extra: 'Оговорка',
+        fu: 'Ф/Е',
+      };
+    }
+    if (this.shippingName === shippingNames.cargo) {
+      this.headTable = {
+        name: 'Наименование груза',
+        inplace_count: 'Кол-во мест',
+        pipe_tag: 'Род упаковки',
+        weight: 'Вес брутто',
+        length: 'Длина',
+        width: 'Ширина',
+        height: 'Высота',
+        place_number: 'Номер места',
+        extra: 'Оговорка',
+        fu: 'Ф/Е',
+      };
+    }
+    if (this.shippingName === shippingNames.crisper) {
+      this.headTable = {
+        name: 'Наименование груза',
+        inplace_count: 'Кол-во мест',
+        pipe_tag: 'Род упаковки',
+        weight: 'Вес брутто',
+        length: 'Длина',
+        width: 'Ширина',
+        height: 'Высота',
+        crisper_number: '№ контейнера',
+        place_number: 'Номер места',
+        extra: 'Оговорка',
+        fu: 'Ф/Е',
+      };
+    }
   },
 
   methods: {
     addRowTable() {
-      this.dataTable.push({
-        name: '',
-        inplace_count: '',
-        pipe_tag: '',
-        weight: '',
-        length: '',
-        width: '',
-        height: '',
-        segment_number: '',
-        diameter: '',
-        thickness: '',
-        place_number: '',
-        extra: '',
-        fu: '',
-      });
+      let objectForDataTable = {};
+      if (this.shippingName === shippingNames.pipes) {
+        objectForDataTable = {
+          name: '',
+          inplace_count: '',
+          pipe_tag: '',
+          weight: '',
+          length: '',
+          width: '',
+          height: '',
+          segment_number: '',
+          diameter: '',
+          thickness: '',
+          place_number: '',
+          extra: '',
+          fu: '',
+        };
+      }
+      if (this.shippingName === shippingNames.cargo) {
+        objectForDataTable = {
+          name: '',
+          inplace_count: '',
+          pipe_tag: '',
+          weight: '',
+          length: '',
+          width: '',
+          height: '',
+          place_number: '',
+          extra: '',
+          fu: '',
+        };
+      }
+      if (this.shippingName === shippingNames.crisper) {
+        objectForDataTable = {
+          name: '',
+          inplace_count: '',
+          pipe_tag: '',
+          weight: '',
+          length: '',
+          width: '',
+          height: '',
+          crisper_number: '',
+          place_number: '',
+          extra: '',
+          fu: '',
+        };
+      }
+
+      this.dataTable.push(objectForDataTable);
     },
 
-    save() {
+    async save() {
       if (!this.isNotValidForm) {
         const document = {
           big: this.big.id,
           contract: this.contract,
           danger_class: this.danger_class,
-          entities: this.dataTable,
+          entities: [
+            ...this.dataTable.map((item, index) => ({
+              ...item,
+              id: index + 1,
+            })),
+          ],
           extra: this.extra,
-          // id: 1, Как я его сформирую?
           object: this.object.id,
           place: this.place.id,
           port: this.port.id,
@@ -376,17 +452,22 @@ export default {
           sender: this.sender.id,
           tag: this.tag,
           transport_tag: this.transport_tag,
-          transport_type: this.transport.id,
+          // TODO: поменять как появиться справочник видов транспорта
+          transport_type: this.transport.name,
           type: 1,
         };
 
-        console.log(document);
+        try {
+          await sendDocToBackend(document);
+          this.$emit('confirmForm');
+        } catch (e) {
+          this.$emit('confirmForm');
+        }
       } else {
-        console.log('не сформирован документ');
+        console.warn('Не заполненны необходимые поля');
       }
-
-      // this.$emit('closeForm');
     },
+
     cancel() {
       this.$emit('closeForm');
     },
@@ -406,6 +487,30 @@ export default {
     @apply grid;
     @apply grid-cols-[321px,348px,1fr];
     @apply gap-[48px];
+  }
+}
+
+.modal-table {
+  box-shadow: 0 0 0 1px #dbe2ea;
+  @apply w-full;
+  @apply rounded-md;
+  @apply cursor-default;
+
+  &__row {
+    @apply border-t border-borderColor;
+    @apply odd:bg-[#ECEDEE];
+  }
+
+  &__cell {
+    @apply text-textGray text-left;
+    @apply text-[11px];
+    @apply leading-[13px];
+    @apply p-2;
+    @apply border-borderColor;
+    @apply border-r;
+    @apply last-of-type:border-r-0;
+    @apply min-w-[50px];
+    width: min-content;
   }
 }
 </style>

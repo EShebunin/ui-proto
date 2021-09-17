@@ -112,6 +112,7 @@
                 :shipping-name="shippingName"
                 class="bg-white shadow-xl mx-auto"
                 @closeForm="setIsOpenModal(false)"
+                @confirmForm="closeModal"
               />
             </div>
           </TransitionChild>
@@ -138,6 +139,7 @@ import FormAdmission from '@/components/FormAdmission.vue';
 
 import { getTableInfo } from '@/api';
 import useReferences from '@/composables/useReferences';
+import shippingNames from '@/composables/shippingNames';
 
 export default {
   components: {
@@ -233,8 +235,7 @@ export default {
         receive_date: new Date(item.receive_date).toLocaleDateString(),
         big: this.getPropertiesValue(item.big, this.bigArray).name,
         port: this.getPropertiesValue(item.port, this.portArray).name,
-        // object: this.getPropertiesValue(item.object, this.objectArray).name,
-        object: 'пусто',
+        object: item.object,
       }));
     },
   },
@@ -250,7 +251,7 @@ export default {
       this.getTypeArray(),
     ]);
 
-    this.mainTableData = await getTableInfo();
+    await this.getDocs();
   },
 
   methods: {
@@ -258,29 +259,39 @@ export default {
     setIsOpenModal(value) {
       this.isOpenModal = value;
     },
+
+    closeModal() {
+      this.getDocs();
+      this.setIsOpenModal(false);
+    },
+
     openModalPipes() {
-      this.shippingName = 'трубы';
+      this.shippingName = shippingNames.pipes;
       requestAnimationFrame(() => {
         this.setIsOpenModal(true);
       });
     },
 
     openModalCrisper() {
-      this.shippingName = 'контейнер';
-      // requestAnimationFrame(() => {
-      //   this.setIsOpenModal(true);
-      // });
+      this.shippingName = shippingNames.crisper;
+      requestAnimationFrame(() => {
+        this.setIsOpenModal(true);
+      });
     },
 
     openModalCargo() {
-      this.shippingName = 'ген. груз';
-      // requestAnimationFrame(() => {
-      //   this.setIsOpenModal(true);
-      // });
+      this.shippingName = shippingNames.cargo;
+      requestAnimationFrame(() => {
+        this.setIsOpenModal(true);
+      });
     },
 
     getPropertiesValue(id, array) {
       return array.find((item) => item.id === id);
+    },
+
+    async getDocs() {
+      this.mainTableData = await getTableInfo();
     },
   },
 };
