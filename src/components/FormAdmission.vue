@@ -121,7 +121,7 @@
       </div>
     </div>
 
-    <div class="form__table mb-[12px]">
+    <div class="form__table mb-[12px] w-full overflow-x-auto">
       <button
         type="button"
         class="
@@ -144,7 +144,7 @@
             <th
               v-for="(value, key) in headTable"
               :key="key"
-              class="modal-table__cell break-words"
+              class="modal-table__cell"
             >
               {{ value }}
             </th>
@@ -160,7 +160,7 @@
             <td
               v-for="(value, key) in row"
               :key="key"
-              class="modal-table__cell break-all"
+              class="modal-table__cell"
             >
               <field-contenteditable
                 v-model="row[key]"
@@ -491,10 +491,9 @@ export default {
 }
 
 .modal-table {
-  box-shadow: 0 0 0 1px #dbe2ea;
   @apply w-full;
-  @apply rounded-md;
   @apply cursor-default;
+  @apply border border-borderColor;
 
   &__row {
     @apply border-t border-borderColor;
@@ -510,7 +509,7 @@ export default {
     @apply border-r;
     @apply last-of-type:border-r-0;
     @apply min-w-[50px];
-    width: min-content;
+    @apply break-words;
   }
 }
 </style>
