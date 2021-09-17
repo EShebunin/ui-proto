@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { getProperties } from '@/api';
 
 /**
@@ -8,7 +8,7 @@ import { getProperties } from '@/api';
 const bigArray = ref([]);
 /**
  * Массив с объектами "Объектов"
- * @type {import('@vue/reactivity').ToRef<Array<{id: Number, name: String}>>}
+ * @type {import('@vue/reactivity').ToRef<Array<{id: String}>>}
  * */
 const objectArray = ref([]);
 /**
@@ -75,7 +75,9 @@ export default function useReferences() {
 
   return {
     bigArray,
-    objectArray,
+    objectArray: computed(() =>
+      objectArray.value.map((item) => ({ id: item.id, name: item.id })),
+    ),
     placeArray,
     portArray,
     receiverArray,
