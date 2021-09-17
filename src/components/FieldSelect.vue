@@ -1,6 +1,7 @@
 <template>
   <Listbox
     :model-value="modelValue"
+    :disabled="disabled"
     as="div"
     class="flex flex-col"
     @update:modelValue="update"
@@ -75,6 +76,7 @@ export default {
     options: { type: Array, required: true },
     /** @type {{id: Number|String, name: String}} */
     modelValue: { type: Object, required: true },
+    disabled: { type: Boolean, default: false, required: false },
   },
 
   emits: ['update:modelValue'],
