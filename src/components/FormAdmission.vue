@@ -121,7 +121,7 @@
       </div>
     </div>
 
-    <div class="form__table mb-[12px] w-full overflow-x-auto">
+    <div class="form__table mb-[12px] w-full">
       <button
         type="button"
         class="
@@ -163,6 +163,7 @@
               class="modal-table__cell"
             >
               <field-contenteditable
+                v-if="key !== 'pipe_tag'"
                 v-model="row[key]"
                 tag="span"
                 :contenteditable="true"
@@ -176,6 +177,7 @@
                   focus:outline-none focus:ring-2 focus:ring-[#8DD6FF]
                 "
               />
+              <field-select v-else v-model="row[key]" :options="packageArray" />
             </td>
           </tr>
         </tbody>
@@ -253,6 +255,7 @@ export default {
       receiverArray,
       senderArray,
       typeArray,
+      packageArray,
     } = useReferences();
 
     return {
@@ -263,14 +266,17 @@ export default {
       receiverArray,
       senderArray,
       typeArray,
+      packageArray,
     };
   },
 
   data() {
     return {
+      // Для таличной части
       headTable: {},
       dataTable: [],
 
+      // Общая часть
       /** Порт выгрузки */
       port: { id: '', name: '' },
 
@@ -440,6 +446,7 @@ export default {
             ...this.dataTable.map((item, index) => ({
               ...item,
               id: index + 1,
+              pipe_tag: item.pipe_tag?.id,
             })),
           ],
           extra: this.extra,
@@ -491,7 +498,7 @@ export default {
 }
 
 .modal-table {
-  @apply w-full;
+  /* @apply w-full; */
   @apply cursor-default;
   @apply border border-borderColor;
 

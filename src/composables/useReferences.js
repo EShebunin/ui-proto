@@ -36,6 +36,11 @@ const senderArray = ref([]);
  * @type {import('@vue/reactivity').ToRef<Array<{id: Number, name: String}>>}
  * */
 const typeArray = ref([]);
+/**
+ * Массив с объектами "Род упаковки"
+ * @type {import('@vue/reactivity').ToRef<Array<{id: Number, name: String}>>}
+ */
+const packageArray = ref([]);
 
 export default function useReferences() {
   /** Получение массива "Укрепненных наименований груза" */
@@ -73,6 +78,11 @@ export default function useReferences() {
     typeArray.value = await getProperties('type');
   };
 
+  /** Получение массива "Род упаковки" */
+  const getPackageArray = async () => {
+    packageArray.value = await getProperties('package');
+  }
+
   return {
     bigArray,
     objectArray: computed(() =>
@@ -83,6 +93,7 @@ export default function useReferences() {
     receiverArray,
     senderArray,
     typeArray,
+    packageArray,
     getBigArray,
     getObjectArray,
     getPlaceArray,
@@ -90,5 +101,6 @@ export default function useReferences() {
     getReceiverArray,
     getSenderArray,
     getTypeArray,
+    getPackageArray,
   };
 }

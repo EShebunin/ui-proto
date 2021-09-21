@@ -170,6 +170,7 @@ export default {
       getReceiverArray,
       getSenderArray,
       getTypeArray,
+      getPackageArray,
     } = useReferences();
 
     return {
@@ -187,6 +188,7 @@ export default {
       getReceiverArray,
       getSenderArray,
       getTypeArray,
+      getPackageArray,
     };
   },
 
@@ -247,6 +249,7 @@ export default {
       this.getReceiverArray(),
       this.getSenderArray(),
       this.getTypeArray(),
+      this.getPackageArray(),
     ]);
 
     await this.getDocs();
