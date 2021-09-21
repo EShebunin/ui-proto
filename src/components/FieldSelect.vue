@@ -6,7 +6,7 @@
     class="flex flex-col"
     @update:modelValue="update"
   >
-    <ListboxLabel class="field__label">{{ label }}</ListboxLabel>
+    <ListboxLabel v-if="label" class="field__label">{{ label }}</ListboxLabel>
 
     <div class="relative">
       <ListboxButton as="template">
