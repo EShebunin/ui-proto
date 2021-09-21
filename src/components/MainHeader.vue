@@ -24,6 +24,9 @@ export default {
 
 <style lang="postcss">
 .header {
+  @apply sticky;
+  @apply top-0;
+  @apply bg-white;
   @apply px-[21px];
   @apply pt-[32px];
   @apply pb-[14px];
