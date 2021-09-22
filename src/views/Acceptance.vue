@@ -163,14 +163,6 @@ export default {
       receiverArray,
       senderArray,
       typeArray,
-      getBigArray,
-      getObjectArray,
-      getPlaceArray,
-      getPortArray,
-      getReceiverArray,
-      getSenderArray,
-      getTypeArray,
-      getPackageArray,
     } = useReferences();
 
     return {
@@ -181,14 +173,6 @@ export default {
       receiverArray,
       senderArray,
       typeArray,
-      getBigArray,
-      getObjectArray,
-      getPlaceArray,
-      getPortArray,
-      getReceiverArray,
-      getSenderArray,
-      getTypeArray,
-      getPackageArray,
     };
   },
 
@@ -241,17 +225,6 @@ export default {
   },
 
   async created() {
-    await Promise.all([
-      this.getBigArray(),
-      this.getObjectArray(),
-      this.getPlaceArray(),
-      this.getPortArray(),
-      this.getReceiverArray(),
-      this.getSenderArray(),
-      this.getTypeArray(),
-      this.getPackageArray(),
-    ]);
-
     await this.getDocs();
   },
 

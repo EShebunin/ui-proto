@@ -75,7 +75,7 @@ export default {
 
   &__cell {
     @apply truncate;
-    @apply text-[18px] leading-[21px];
+    @apply text-[18px] text-left leading-[21px];
     @apply min-w-[50px];
     @apply px-[14px] py-[13px];
     @apply border-r border-borderColor;

@@ -10,9 +10,48 @@
 <script>
 import MainAside from './components/MainAside.vue';
 
+import useReferences from '@/composables/useReferences';
+
 export default {
   components: {
     MainAside,
+  },
+
+  setup() {
+    const {
+      getBigArray,
+      getObjectArray,
+      getPlaceArray,
+      getPortArray,
+      getReceiverArray,
+      getSenderArray,
+      getTypeArray,
+      getPackageArray,
+    } = useReferences();
+
+    return {
+      getBigArray,
+      getObjectArray,
+      getPlaceArray,
+      getPortArray,
+      getReceiverArray,
+      getSenderArray,
+      getTypeArray,
+      getPackageArray,
+    };
+  },
+
+  async created() {
+    await Promise.all([
+      this.getBigArray(),
+      this.getObjectArray(),
+      this.getPlaceArray(),
+      this.getPortArray(),
+      this.getReceiverArray(),
+      this.getSenderArray(),
+      this.getTypeArray(),
+      this.getPackageArray(),
+    ]);
   },
 };
 </script>
