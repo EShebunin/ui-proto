@@ -80,7 +80,7 @@ export default {
     return {
       list: [
         { id: 'port', name: 'Порт перевалки' },
-        { id: 'sender', name: 'Грузооправители' },
+        { id: 'sender', name: 'Грузоотправители' },
         { id: 'receiver', name: 'Грузополучатели' },
         // Что это если есть укрупненка
         // { id: 'big', name: 'Наименование груза' },
