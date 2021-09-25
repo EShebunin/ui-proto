@@ -27,6 +27,7 @@ export default {
       getSenderArray,
       getTypeArray,
       getPackageArray,
+      getTransportArray,
     } = useReferences();
 
     return {
@@ -38,6 +39,7 @@ export default {
       getSenderArray,
       getTypeArray,
       getPackageArray,
+      getTransportArray,
     };
   },
 
@@ -51,6 +53,7 @@ export default {
       this.getSenderArray(),
       this.getTypeArray(),
       this.getPackageArray(),
+      this.getTransportArray(),
     ]);
   },
 };
