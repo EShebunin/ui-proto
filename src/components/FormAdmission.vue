@@ -1,7 +1,7 @@
 <template>
   <div
     class="
-      w-[996px]
+      max-w-[1048px]
       py-[22px]
       px-[24px]
       text-textBlack
@@ -23,7 +23,6 @@
             label="Порт выгрузки"
             class="w-full mr-[27px]"
           />
-          <!-- TODO: Добавить справочник тип транспорта -->
           <field-select
             v-model="transport"
             :options="transportOptions"
@@ -142,11 +141,12 @@
         <thead class="modal-table__head">
           <tr>
             <th
-              v-for="(value, key) in headTable"
-              :key="key"
+              v-for="item in headTable"
+              :key="item.id"
+              :style="{ width: item.size }"
               class="modal-table__cell"
             >
-              {{ value }}
+              {{ item.name }}
             </th>
           </tr>
         </thead>
@@ -157,27 +157,28 @@
             :key="indexRow"
             class="modal-table__row"
           >
-            <td
-              v-for="(value, key) in row"
-              :key="key"
-              class="modal-table__cell"
-            >
+            <td v-for="item in row" :key="item.id" class="modal-table__cell">
               <field-contenteditable
-                v-if="key !== 'pipe_tag'"
-                v-model="row[key]"
-                tag="span"
+                v-if="item.id !== 'pipe_tag'"
+                v-model="item.name"
+                tag="div"
                 :contenteditable="true"
                 :no-n-l="true"
                 :no-h-t-m-l="true"
                 class="
                   text-[12px] text-textBlack
                   leading-[14px]
-                  inline-block
                   w-full
-                  focus:outline-none focus:ring-2 focus:ring-[#8DD6FF]
+                  h-[30px]
+                  focus:outline-none
+                  focus:ring-2 focus:ring-[#8DD6FF]
                 "
               />
-              <field-select v-else v-model="row[key]" :options="packageArray" />
+              <field-select
+                v-else
+                v-model="item.name"
+                :options="packageArray"
+              />
             </td>
           </tr>
         </tbody>
@@ -256,6 +257,7 @@ export default {
       senderArray,
       typeArray,
       packageArray,
+      transportArray,
     } = useReferences();
 
     return {
@@ -267,13 +269,14 @@ export default {
       senderArray,
       typeArray,
       packageArray,
+      transportArray,
     };
   },
 
   data() {
     return {
       // Для таличной части
-      headTable: {},
+      headTable: [],
       dataTable: [],
 
       // Общая часть
@@ -282,8 +285,6 @@ export default {
 
       /** Вид ТС */
       transport: { id: '', name: '' },
-      // TODO: добавить справочник вида авто
-      transportOptions: [{ id: 1, name: 'Авто' }],
       /** Грузооправитель */
       sender: { id: '', name: '' },
       /** Грузополучатель */
@@ -314,7 +315,10 @@ export default {
   },
 
   computed: {
-    /** Проверка формы на корректность заполнения данными */
+    /**
+     * Проверка формы на корректность заполнения данными
+     * TODO: требуется уточнение
+     *  */
     isNotValidForm() {
       return (
         !this.big.id &&
@@ -322,156 +326,165 @@ export default {
         !this.danger_class &&
         !this.object.id &&
         !this.port.id &&
-        // !this.place.id &&
+        !this.place.id &&
         !this.receive_date &&
         !this.send_date &&
         !this.sender.id &&
         !this.receiver.id &&
         !this.tag &&
-        !this.transport_tag
-        // &&
-        // !this.transport.id
+        !this.transport_tag &&
+        !this.transport.id
       );
+    },
+
+    /**
+     * Модификация видов транспорта под единый вид всех справочников
+     */
+    transportOptions() {
+      return this.transportArray.map((item) => ({
+        id: item.id,
+        name: item.type,
+      }));
+    },
+
+    /** Форматирование табличной части для передачи на бек */
+    formatEntities() {
+      return this.dataTable.map((arr) => {
+        const mod = {};
+        arr.forEach((object) => {
+          if (object.id !== 'pipe_tag') {
+            mod[object.id] = object.name;
+          } else {
+            mod[object.id] = object.name.id;
+          }
+        });
+        return mod;
+      });
     },
   },
   mounted() {
     if (this.shippingName === shippingNames.pipes) {
-      this.headTable = {
-        name: 'Наименование груза',
-        inplace_count: 'Кол-во мест',
-        pipe_tag: 'Род упаковки',
-        weight: 'Вес брутто',
-        length: 'Длина',
-        width: 'Ширина',
-        height: 'Высота',
-        segment_number: '№ сегмента',
-        diameter: 'Диаметр',
-        thickness: 'Толщина стенки',
-        place_number: 'Номер места',
-        extra: 'Оговорка',
-        fu: 'Ф/Е',
-      };
+      this.headTable = [
+        { id: 'name', name: 'Наименование груза', size: '118px' },
+        { id: 'inplace_count', name: 'Кол-во мест', size: '55px' },
+        { id: 'pipe_tag', name: 'Род упаковки', size: '90px' },
+        { id: 'weight', name: 'Вес брутто (тн)', size: '77px' },
+        { id: 'length', name: 'Длина (м)', size: '71px' },
+        { id: 'diameter', name: 'Диаметр (м)', size: '87px' },
+        { id: 'thickness', name: 'Толщина стенки (м)', size: '74px' },
+        { id: 'segment_number', name: '№ сегмента', size: '84px' },
+        { id: 'place_number', name: 'Номер места', size: '55px' },
+        { id: 'extra', name: 'Оговорка', size: '240px' },
+        { id: 'fu', name: 'Ф/Е', size: '46px' },
+      ];
     }
     if (this.shippingName === shippingNames.cargo) {
-      this.headTable = {
-        name: 'Наименование груза',
-        inplace_count: 'Кол-во мест',
-        pipe_tag: 'Род упаковки',
-        weight: 'Вес брутто',
-        length: 'Длина',
-        width: 'Ширина',
-        height: 'Высота',
-        place_number: 'Номер места',
-        extra: 'Оговорка',
-        fu: 'Ф/Е',
-      };
+      // this.headTable = {
+      //   name: 'Наименование груза',
+      //   inplace_count: 'Кол-во мест',
+      //   pipe_tag: 'Род упаковки',
+      //   weight: 'Вес брутто',
+      //   length: 'Длина',
+      //   width: 'Ширина',
+      //   height: 'Высота',
+      //   place_number: 'Номер места',
+      //   extra: 'Оговорка',
+      //   fu: 'Ф/Е',
+      // };
     }
     if (this.shippingName === shippingNames.crisper) {
-      this.headTable = {
-        name: 'Наименование груза',
-        inplace_count: 'Кол-во мест',
-        pipe_tag: 'Род упаковки',
-        weight: 'Вес брутто',
-        length: 'Длина',
-        width: 'Ширина',
-        height: 'Высота',
-        crisper_number: '№ контейнера',
-        place_number: 'Номер места',
-        extra: 'Оговорка',
-        fu: 'Ф/Е',
-      };
+      // this.headTable = {
+      //   name: 'Наименование груза',
+      //   inplace_count: 'Кол-во мест',
+      //   pipe_tag: 'Род упаковки',
+      //   weight: 'Вес брутто',
+      //   length: 'Длина',
+      //   width: 'Ширина',
+      //   height: 'Высота',
+      //   crisper_number: '№ контейнера',
+      //   place_number: 'Номер места',
+      //   extra: 'Оговорка',
+      //   fu: 'Ф/Е',
+      // };
     }
   },
 
   methods: {
     addRowTable() {
-      let objectForDataTable = {};
+      let itemForDataTable = {};
       if (this.shippingName === shippingNames.pipes) {
-        objectForDataTable = {
-          name: '',
-          inplace_count: '',
-          pipe_tag: '',
-          weight: '',
-          length: '',
-          width: '',
-          height: '',
-          segment_number: '',
-          diameter: '',
-          thickness: '',
-          place_number: '',
-          extra: '',
-          fu: '',
-        };
+        itemForDataTable = [
+          { id: 'name', name: '' },
+          { id: 'inplace_count', name: '' },
+          { id: 'pipe_tag', name: { id: '', name: '' } },
+          { id: 'weight', name: '' },
+          { id: 'length', name: '' },
+          { id: 'diameter', name: '' },
+          { id: 'thickness', name: '' },
+          { id: 'segment_number', name: '' },
+          { id: 'place_number', name: '' },
+          { id: 'extra', name: '' },
+          { id: 'fu', name: '' },
+        ];
       }
       if (this.shippingName === shippingNames.cargo) {
-        objectForDataTable = {
-          name: '',
-          inplace_count: '',
-          pipe_tag: '',
-          weight: '',
-          length: '',
-          width: '',
-          height: '',
-          place_number: '',
-          extra: '',
-          fu: '',
-        };
+        // itemForDataTable = {
+        //   name: '',
+        //   inplace_count: '',
+        //   pipe_tag: '',
+        //   weight: '',
+        //   length: '',
+        //   width: '',
+        //   height: '',
+        //   place_number: '',
+        //   extra: '',
+        //   fu: '',
+        // };
       }
       if (this.shippingName === shippingNames.crisper) {
-        objectForDataTable = {
-          name: '',
-          inplace_count: '',
-          pipe_tag: '',
-          weight: '',
-          length: '',
-          width: '',
-          height: '',
-          crisper_number: '',
-          place_number: '',
-          extra: '',
-          fu: '',
-        };
+        // itemForDataTable = {
+        //   name: '',
+        //   inplace_count: '',
+        //   pipe_tag: '',
+        //   weight: '',
+        //   length: '',
+        //   width: '',
+        //   height: '',
+        //   crisper_number: '',
+        //   place_number: '',
+        //   extra: '',
+        //   fu: '',
+        // };
       }
 
-      this.dataTable.push(objectForDataTable);
+      this.dataTable.push(itemForDataTable);
     },
 
     async save() {
-      if (!this.isNotValidForm) {
-        const document = {
-          big: this.big.id,
-          contract: this.contract,
-          danger_class: this.danger_class,
-          entities: [
-            ...this.dataTable.map((item, index) => ({
-              ...item,
-              id: index + 1,
-              pipe_tag: item.pipe_tag?.id,
-            })),
-          ],
-          extra: this.extra,
-          object: this.object.id,
-          place: this.place.id,
-          port: this.port.id,
-          receive_date: this.receive_date,
-          receiver: this.receiver.id,
-          send_date: this.send_date,
-          sender: this.sender.id,
-          tag: this.tag,
-          transport_tag: this.transport_tag,
-          // TODO: поменять как появиться справочник видов транспорта
-          transport_type: this.transport.name,
-          type: 1,
-        };
+      const document = {
+        big: this.big.id,
+        contract: this.contract,
+        danger_class: this.danger_class,
+        entities: [...this.formatEntities],
+        extra: this.extra,
+        object: this.object.id,
+        place: this.place.id,
+        port: this.port.id,
+        receive_date: this.receive_date,
+        receiver: this.receiver.id,
+        send_date: this.send_date,
+        sender: this.sender.id,
+        tag: this.tag,
+        transport_tag: this.transport_tag,
+        transport_type: this.transport.name,
+        type: 1,
+      };
 
-        try {
-          await sendDocToBackend(document);
-          this.$emit('confirmForm');
-        } catch (e) {
-          this.$emit('confirmForm');
-        }
-      } else {
-        console.warn('Не заполненны необходимые поля');
+      try {
+        await sendDocToBackend(document);
+        this.$emit('confirmForm');
+      } catch (e) {
+        this.$emit('confirmForm');
       }
     },
 
@@ -498,7 +511,8 @@ export default {
 }
 
 .modal-table {
-  /* @apply w-full; */
+  @apply table-fixed;
+  @apply w-full;
   @apply cursor-default;
   @apply border border-borderColor;
 

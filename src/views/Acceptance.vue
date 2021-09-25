@@ -80,7 +80,7 @@
     </template>
   </main-header>
 
-  <main-table :headers="mainTableHeader" :data="formatTableData" />
+  <main-table v-if="formatTableData" :headers="mainTableHeader" :data="formatTableData" />
 
   <TransitionRoot appear :show="isOpenModal" as="template">
     <Dialog as="div">
@@ -110,7 +110,7 @@
             <form-admission
               :shipping-name="shippingName"
               class="bg-white shadow-xl mx-auto"
-              @closeForm="setIsOpenModal(false)"
+              @closeForm="closeModal"
               @confirmForm="closeModal"
             />
           </div>
@@ -246,18 +246,24 @@ export default {
       });
     },
 
+    // TODO: включить после обоснования требований
     openModalCrisper() {
-      this.shippingName = shippingNames.crisper;
-      requestAnimationFrame(() => {
-        this.setIsOpenModal(true);
-      });
+      // eslint-disable-next-line no-alert
+      window.alert('Данный функционал не реализован в данной версии');
+      // this.shippingName = shippingNames.crisper;
+      // requestAnimationFrame(() => {
+      //   this.setIsOpenModal(true);
+      // });
     },
 
+    // TODO: включить после обоснования требований
     openModalCargo() {
-      this.shippingName = shippingNames.cargo;
-      requestAnimationFrame(() => {
-        this.setIsOpenModal(true);
-      });
+      // eslint-disable-next-line no-alert
+      window.alert('Данный функционал не реализован в данной версии');
+      // this.shippingName = shippingNames.cargo;
+      // requestAnimationFrame(() => {
+      //   this.setIsOpenModal(true);
+      // });
     },
 
     getPropertiesValue(id, array) {
